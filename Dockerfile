@@ -16,4 +16,4 @@ RUN dnf --enablerepo=elrepo-kernel install -y kernel-ml
 
 RUN dnf -y install iperf3
 
-CMD ["iperf3 -s"]
+CMD ["/usr/bin/iperf3 -s"]

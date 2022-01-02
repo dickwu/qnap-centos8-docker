@@ -16,6 +16,19 @@ RUN dnf --enablerepo=elrepo-kernel install -y kernel-ml
 
 RUN dnf -y install iperf3
 
-CMD ["/usr/bin/iperf3", "-s"]
+# install git & PHP & extensions
+RUN dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN dnf module enable php:remi-8.0 -y
+RUN dnf -y install git php php-swoole php-bcmath php-redis
+# update theswoole configuration
+RUN echo "swoole.use_shortname = Off" >> /etc/php.d/*-swoole.ini
+
+# install GOLANG
+RUN dnf -y install golang
+
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+CMD ["./usr/local/bin/start.sh"]
 
 EXPOSE 5201
